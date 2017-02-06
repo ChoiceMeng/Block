@@ -20,6 +20,8 @@ public class Game : MonoBehaviour
     public tk2dSprite[,] spriteBoardUp = new tk2dSprite[10, 8];
     public Transform parentsBoard;
 	public GameObject cellMode;
+
+    public GameObject netFlag;
 	// Use this for initialization
 	void Start ()
 	{
@@ -43,12 +45,8 @@ public class Game : MonoBehaviour
 
     void OnRankingCallback(ActionResult actionResult)
     {
-        if (actionResult != null)
-        {
-            int a = 1;
-            //user = actionResult.Get<string>("passportID");
-            //pwd = actionResult.Get<string>("password");
-        }
+        if (netFlag != null)
+            netFlag.SetActive(true);
     }
 
     // Update is called once per frame
@@ -116,10 +114,10 @@ public class Game : MonoBehaviour
 				Debug.Log ("" + ((pos.x - botleftBoardPos.x + Config.CELL_SIZE / 2) / Config.CELL_SIZE));
 				int xTag = (int)((pos.x - botleftBoardPos.x + Config.CELL_SIZE / 2) / Config.CELL_SIZE);
 				int yTag = (int)((pos.y - botleftBoardPos.y + Config.CELL_SIZE / 2) / Config.CELL_SIZE);
-				if (xTag > board.GetLength(0))
-					xTag = board.GetLength(0);
-				if (yTag > board.GetLength(1))
-					yTag = board.GetLength(1);
+				if (xTag > board.GetLength(1))
+					xTag = board.GetLength(1);
+				if (yTag > board.GetLength(0))
+					yTag = board.GetLength(0);
 				Debug.Log ("pos Tag: " + xTag + ", " + yTag);
 				bool isTag = true;
 				for (int i = xTag; i<xTag+currSelectionBlock.w; i++) {
@@ -162,7 +160,9 @@ public class Game : MonoBehaviour
 					board [i, j] = currSelectionBlock.type;
 				}
 			}
-		}
+
+            SimNetPlayer(xTag, yTag, currSelectionBlock.w, currSelectionBlock.h, currSelectionBlock.type);
+        }
 
 		for (int i =0; i<currSelectionBlock.listSprite.Length; i++) {
 			if (currSelectionBlock.listSprite [i] != null) {
@@ -184,7 +184,7 @@ public class Game : MonoBehaviour
 			}
 
 			if (addCol) {
-				for (int j =0; j< board.GetLength(1); j++) {
+				for (int j =0; j< board.GetLength(0); j++) {
 					board [i, j] = -1;
 
 				}
@@ -216,7 +216,7 @@ public class Game : MonoBehaviour
 		List<tk2dSprite> listAct = new List<tk2dSprite> ();
 
 		for (int j =0; j<listRow.Count; j++) {
-			for (int i =0; i< board.GetLength(1); i++) {
+			for (int i =0; i< board.GetLength(0); i++) {
 				if (!listAct.Contains (spriteBoardDown [i, listRow [j]])) {
 					listAct.Add (spriteBoardDown [i, listRow [j]]);
 				}
@@ -224,7 +224,7 @@ public class Game : MonoBehaviour
 		}
 
 		for (int i =0; i<listCol.Count; i++) {
-			for (int j =0; j< board.GetLength(0); j++) {
+			for (int j =0; j< board.GetLength(1); j++) {
 				if (!listAct.Contains (spriteBoardDown [listCol [i], j])) {
 					listAct.Add (spriteBoardDown [listCol [i], j]);
 				}
@@ -394,5 +394,21 @@ public class Game : MonoBehaviour
             }
 		}
 	}
+
+    // simulator net message
+    public void SimNetPlayer(int xPos, int yPos, int nWidth, int nHeight, int nType)
+    {
+        int xTag = xPos;
+        int yTag = yPos;
+
+        for (int i = xTag; i < xTag + nWidth; i++)
+        {
+            for (int j = yTag; j < yTag + nHeight; j++)
+            {
+                spriteBoardUp[i, j].SetSprite("1_" + nType);
+                spriteBoardUp[i, j].gameObject.SetActive(true);
+            }
+        }
+    }
 }
 
