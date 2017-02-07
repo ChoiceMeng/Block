@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _1010Server.Script.CsScript.GamePlay
+namespace Game.Script
 {
     class Room
     {
         static Room ins = null;
-        static Room GetIns()
+        static public Room GetIns()
         {
             if (ins == null)
                 ins = new Room();
@@ -19,8 +19,14 @@ namespace _1010Server.Script.CsScript.GamePlay
         
         List<Player> mPlayerList = new List<Player>();
 
-        bool JoinPlayer(Player player)
+        public bool JoinPlayer(int guid)
         {
+            Player player = GetPlayer(guid);
+            if (player != null)
+                return false;
+
+            player = new Player(guid);
+
             if (mPlayerList.Count >= 2)
                 return false;
 
@@ -33,6 +39,17 @@ namespace _1010Server.Script.CsScript.GamePlay
         {
             if (mPlayerList.Contains(player))
                 mPlayerList.Remove(player);
+        }
+
+        public Player GetPlayer(int nGuid)
+        {
+            for(int i = 0; i < mPlayerList.Count; ++i)
+            {
+                if (mPlayerList[i].Guid == nGuid)
+                    return mPlayerList[i];
+            }
+
+            return null;
         }
     }
 }

@@ -50,6 +50,7 @@ namespace Game.Script
         protected override void OnConnectCompleted(object sender, ConnectionEventArgs e)
         {
             Console.WriteLine("客户端IP:[{0}]已与服务器连接成功", e.Socket.RemoteEndPoint);
+            Room.GetIns().JoinPlayer(e.Socket.GetHashCode().GetHashCode());
             base.OnConnectCompleted(sender, e);
         }
 

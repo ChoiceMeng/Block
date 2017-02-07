@@ -4,10 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _1010Server.Script.CsScript.GamePlay
+namespace Game.Script
 {
     class Player
     {
+        public int Guid
+        {
+            get;
+            set;
+        }
 
+        public Player(int nGuid)
+        {
+            Guid = nGuid;
+        }
     }
 }

@@ -114,10 +114,10 @@ public class Game : MonoBehaviour
 				Debug.Log ("" + ((pos.x - botleftBoardPos.x + Config.CELL_SIZE / 2) / Config.CELL_SIZE));
 				int xTag = (int)((pos.x - botleftBoardPos.x + Config.CELL_SIZE / 2) / Config.CELL_SIZE);
 				int yTag = (int)((pos.y - botleftBoardPos.y + Config.CELL_SIZE / 2) / Config.CELL_SIZE);
-				if (xTag > board.GetLength(1))
-					xTag = board.GetLength(1);
-				if (yTag > board.GetLength(0))
-					yTag = board.GetLength(0);
+				if (xTag > board.GetLength(0))
+					xTag = board.GetLength(0);
+				if (yTag > board.GetLength(1))
+					yTag = board.GetLength(1);
 				Debug.Log ("pos Tag: " + xTag + ", " + yTag);
 				bool isTag = true;
 				for (int i = xTag; i<xTag+currSelectionBlock.w; i++) {
